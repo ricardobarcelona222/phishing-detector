@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard - Phishing Detector</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- SaaS CSS -->
+<link href="/static/css/dashboard.css" rel="stylesheet">
+
+<!-- ChartJS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get("token");
+
+if (token) {
+    localStorage.setItem("token", token);
+    window.location.href = "/dashboard";
+}
+</script>
+
+</head>
+
+<body class="dashboard-body">
+
+<div class="container mt-5 dashboard-container">
+
+<div class="dashboard-header">
+    <h2 class="dashboard-title">🛡️ Phishing Detector</h2>
+    <button class="btn btn-danger" onclick="logout()">Cerrar sesión</button>
+</div>
+
+<!-- TARJETAS METRICAS -->
+<div class="row text-center mb-4">
+
+<div class="col-md-3">
+<div class="card metric-card">
+<div class="card-body">
+<h6>Total Analizados</h6>
+<h3 id="metricTotal">0</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card metric-card danger">
+<div class="card-body">
+<h6>Phishing Detectado</h6>
+<h3 id="metricPhishing">0</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card metric-card success">
+<div class="card-body">
+<h6>Legítimos</h6>
+<h3 id="metricLegit">0</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card metric-card warning">
+<div class="card-body">
+<h6>Tasa Phishing</h6>
+<h3 id="metricRate">0%</h3>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ANALIZAR MENSAJE -->
+<!-- ANALIZAR MENSAJE -->
+<div class="card dashboard-card mb-4">
+<div class="card-header">Analizar Mensaje o Archivo</div>
+
+<div class="card-body">
+
+<!-- Texto -->
+<textarea id="message"
+class="form-control mb-3 dashboard-textarea"
+rows="4"
+placeholder="Escribe o pega un mensaje o URL..."></textarea>
+
+<button class="btn btn-primary dashboard-btn mb-4" onclick="analyzeMessage()">
+Analizar Mensaje
+</button>
+
+<hr>
+
+
+<!-- ANALIZAR ARCHIVO -->
+<div class="card dashboard-card mb-4">
+
+    <div class="card-header">
+         Analizar Archivo
+    </div>
+
+    <div class="card-body">
+
+        <div class="file-upload-box"
+             onclick="document.getElementById('fileInput').click()">
+
+            <span id="fileName">
+                Haz clic para seleccionar archivo (PDF, DOCX, TXT)
+            </span>
+
+            <input type="file"
+                   id="fileInput"
+                   accept=".pdf,.docx,.txt"
+                   hidden>
+        </div>
+
+        <button class="btn btn-primary dashboard-btn mt-3"
+                onclick="analyzeFile()">
+            Analizar Archivo
+        </button>
+
+    </div>
+
+</div>
+
+<!-- RESULTADO -->
+<div id="resultCard" class="analysis-card hidden">
+    <div class="analysis-header">
+        <h4 id="analysisTitle"></h4>
+        <span id="analysisBadge" class="badge"></span>
+    </div>
+
+    <div class="progress-container">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <p id="analysisDescription" class="analysis-description"></p>
+</div>
+
+
+<!-- ESTADÍSTICAS -->
+<div class="card dashboard-card mt-4">
+<div class="card-header">📊 Estadísticas de detección</div>
+
+<div class="card-body">
+<canvas id="statsChart"></canvas>
+</div>
+</div>
+
+<!-- GRAFICA FECHAS -->
+<div class="card dashboard-card mt-4">
+<div class="card-header">📅 Análisis por fecha</div>
+
+<div class="card-body">
+<canvas id="statsByDateChart"></canvas>
+</div>
+</div>
+
+<!-- FILTROS -->
+<div class="row mb-3">
+
+<div class="col-md-4">
+<input type="text" id="filterText"
+class="form-control dashboard-input"
+placeholder="Buscar en mensaje...">
+</div>
+
+<div class="col-md-3">
+<select id="filterType" class="form-select dashboard-input">
+<option value="">Todos</option>
+<option value="phishing">Phishing</option>
+<option value="legit">Legítimo</option>
+</select>
+</div>
+
+<div class="col-md-3">
+<select id="filterRisk" class="form-select dashboard-input">
+<option value="">Todos los niveles</option>
+<option value="HIGH">Alto</option>
+<option value="MEDIUM">Medio</option>
+<option value="LOW">Bajo</option>
+</select>
+</div>
+
+<div class="col-md-2">
+<button class="btn btn-primary w-100 dashboard-btn" onclick="applyFilters()">
+Filtrar
+</button>
+</div>
+
+</div>
+
+<!-- HISTORIAL -->
+<div class="card dashboard-card mt-4">
+<div class="card-header">Historial</div>
+
+<div class="card-body">
+
+<button class="btn btn-secondary mb-3" onclick="loadHistory()">
+Cargar historial
+</button>
+
+<button class="btn btn-success mb-3" onclick="exportHistoryPDF()">
+Exportar PDF
+</button>
+
+<button class="btn btn-primary mb-3" onclick="exportHistoryExcel()">
+Exportar Excel
+</button>
+
+<div class="table-responsive">
+<table class="table dashboard-table">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Mensaje</th>
+<th>Phishing</th>
+<th>Riesgo</th>
+<th>Nivel</th>
+<th>Fecha</th>
+</tr>
+</thead>
+
+<tbody id="historyTable"></tbody>
+
+</table>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+
+</body>
+</html>

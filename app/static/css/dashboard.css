@@ -1,0 +1,312 @@
+/* ===== Fondo SaaS ===== */
+
+.dashboard-body{
+background: linear-gradient(135deg,#0f172a,#1e3a8a);
+min-height:100vh;
+color:white;
+}
+
+/* ===== Contenedor ===== */
+
+.dashboard-container{
+background:white;
+border-radius:18px;
+padding:30px;
+box-shadow:0 10px 35px rgba(0,0,0,0.2);
+}
+
+/* ===== Header ===== */
+
+.dashboard-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.dashboard-title{
+font-weight:700;
+color:#1e3a8a;
+}
+
+/* ===== Cards ===== */
+
+.dashboard-card{
+border:none;
+border-radius:14px;
+box-shadow:0 4px 18px rgba(0,0,0,0.08);
+}
+
+.dashboard-card .card-header{
+background:#1e3a8a;
+color:white;
+font-weight:600;
+border-radius:14px 14px 0 0;
+}
+
+/* ===== Metric Cards ===== */
+
+.metric-card{
+border:none;
+border-radius:14px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.metric-card:hover{
+transform:translateY(-5px);
+}
+
+.metric-card h3{
+font-weight:700;
+color:#1e3a8a;
+}
+
+.metric-card.danger h3{
+color:#dc2626;
+}
+
+.metric-card.success h3{
+color:#16a34a;
+}
+
+.metric-card.warning h3{
+color:#d97706;
+}
+
+/* ===== Inputs ===== */
+
+.dashboard-input{
+border-radius:10px;
+}
+
+/* ===== Textarea ===== */
+
+.dashboard-textarea{
+border-radius:10px;
+}
+
+/* ===== Botones ===== */
+
+.dashboard-btn{
+border-radius:10px;
+font-weight:600;
+}
+
+/* ===== Resultado ===== */
+
+.dashboard-result{
+background:#0f172a;
+color:#22c55e;
+padding:15px;
+border-radius:10px;
+}
+
+/* ===== Tabla ===== */
+
+.dashboard-table{
+border-radius:12px;
+overflow:hidden;
+}
+
+.dashboard-table thead{
+background:#1e3a8a;
+color:white;
+}
+
+.dashboard-table tbody tr:hover{
+background:#f1f5f9;
+}
+
+
+/* =========================
+   CHART ESTILO ADMIN
+========================= */
+
+/* Contenedor de gráficas */
+
+.dashboard-card canvas{
+    max-height: 320px;
+    width: 100% !important;
+}
+
+/* Ajuste visual del card body */
+
+.dashboard-card .card-body{
+    padding: 25px;
+}
+
+/* Espaciado elegante entre charts */
+
+.dashboard-card{
+    overflow: hidden;
+}
+.dashboard-card{
+    transition: all 0.25s ease;
+}
+
+.dashboard-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+}
+
+.analysis-card {
+    background: #0f172a;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 15px;
+    transition: 0.3s ease;
+}
+
+.analysis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-container {
+    width: 100%;
+    background: #1e293b;
+    height: 12px;
+    border-radius: 6px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.6s ease;
+}
+
+.analysis-description {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none;
+}
+.analysis-card {
+    background: #0f172a;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 15px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
+
+.analysis-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================= */
+/* 📂 FILE UPLOAD STYLE */
+/* ============================= */
+
+.file-upload-container {
+    animation: fadeInUp 0.4s ease-in-out;
+}
+
+.file-upload-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    color: #555;
+}
+
+.file-upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+}
+
+.file-upload-box:hover {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+    transform: translateY(-2px);
+}
+
+.file-upload-box span {
+    color: #eff1f4;
+    font-size: 14px;
+}
+
+/* Animación consistente con el sistema */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.file-upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+    font-size: 14px;
+}
+
+.file-upload-box:hover {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+    transform: translateY(-2px);
+}
+
+/* ============================= */
+/* Animación tarjeta resultado */
+/* ============================= */
+
+.analysis-card {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.4s ease;
+}
+
+.analysis-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* ============================= */
+/* Fix texto en tarjeta resultado */
+/* ============================= */
+
+.analysis-card {
+    color: #ffffff;
+}
+
+.analysis-card h4,
+.analysis-card p {
+    color: #ffffff;
+}
+
+.analysis-description {
+    color: #e2e8f0; /* blanco suave */
+}
+
+.analysis-reasons {
+    margin-top: 10px;
+}
+
+.analysis-reasons ul {
+    margin: 0;
+}
+
+.analysis-reasons li {
+    margin-bottom: 6px;
+    font-size: 14px;
+}
